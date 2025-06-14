@@ -57,6 +57,20 @@ const Join = () => {
     },
   ];
 
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError(null); // Reset errors on new submission
+  try {
+    const res = await axios.post('/api/signup', formData);
+    if (res.data.error) setError(res.data.error);
+    // Successful signup logic here (e.g., redirect)
+  } catch (err) {
+    setError(err.response?.data?.message || 'Signup failed');
+  }
+};
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -177,6 +191,11 @@ const Join = () => {
             </CardContent>
           </Card>
         </div>
+        {error && (
+          <div className="bg-red-100 text-red-700 p-2 mb-4 rounded">
+            {error}
+          </div>
+        )}
       </section>
 
       {/* How It Works */}
